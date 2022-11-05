@@ -14,8 +14,8 @@ export const CharacterCard: FC<{ character: Character }> = ({ character }) => {
       <Image
         src={`${image}`}
         alt={name}
-        width={270}
-        height={270}
+        width={214}
+        height={214}
         style={{ objectFit: "contain" }}
       />
 
@@ -23,10 +23,8 @@ export const CharacterCard: FC<{ character: Character }> = ({ character }) => {
         title={name}
         subtitle={
           <Box sx={{ fontWeight: "bold" }}>
-            <Stack direction="row" my={1}>
-              <Box sx={{ flexGrow: 1 }}>Status:{status}</Box>
-              <Box sx={{ justifyContent: "flex-end" }}>Species: {species}</Box>
-            </Stack>
+            <Box my={1}>Status:{status}</Box>
+            <Box mb={1}>Species: {species}</Box>
             <Box mb={1}>Origin: {origin.name}</Box>
             <Box>Location: {location.name}</Box>
           </Box>

@@ -58,8 +58,7 @@ export const Characters: FC<ICharactersPage> = ({ data, errorData }) => {
   const router = useRouter();
   const queries = router.query;
 
-  const [page, setPage] = useState(1);
-  const [RequiredList, setRequiredList] = useState([]);
+  const [page, setPage] = useState(Number(queries.page));
 
   const {
     data: charactersList,
@@ -73,40 +72,8 @@ export const Characters: FC<ICharactersPage> = ({ data, errorData }) => {
     initialData: data,
   });
 
-  //Prepare Required Number of Characters If CharactersList is not Empty
-  useEffect(() => {
-    if (charactersList && !isEmpty(charactersList?.results)) {
-      let required: any = [];
-      map(charactersList.results, (character, index) => {
-        if (index < 6) required = [...required, character];
-      });
-
-      setRequiredList(required);
-    }
-  }, [charactersList]);
-
-  const PAGE_SIZE = 5;
-  const API_DEFAULT_PAGESIZE = 20;
-  // Check out if fetching new block of data is necessary of not
-  useEffect(() => {
-    const lastItemIndex = page * PAGE_SIZE;
-    const apiPageNumber = Math.ceil(lastItemIndex / API_DEFAULT_PAGESIZE);
-
-    if (this.isBufferDeprecated(apiPageNumber, filter)) {
-      await this.bufferRequiredData(filter, apiPageNumber);
-    }
-
-    const startIndex = ((pageNumber - 1) * pageSize) % API_DEFAULT_PAGESIZE;
-    let endIndex = (pageNumber * pageSize) % API_DEFAULT_PAGESIZE;
-    endIndex = endIndex === 0 ? API_DEFAULT_PAGESIZE : endIndex;
-
-    const searchResult = this.bufferedData.characters.results.slice(
-      startIndex,
-      endIndex
-    );
-  }, [page]);
-
   const handleChangePage = (page: number) => {
+    router.push(`/characters?name=${queries.name}&page=${page}`);
     setPage(page);
   };
 
@@ -116,10 +83,8 @@ export const Characters: FC<ICharactersPage> = ({ data, errorData }) => {
   // Handle Empty Data
   if (!charactersList || isEmpty(charactersList?.results)) return <EmptyData />;
 
-  console.log(charactersList);
-
   return (
-    <Container maxWidth="md" sx={{ height: "100vh", mt: 5 }}>
+    <Container maxWidth="lg" sx={{ height: "100vh", mt: 5, mb: 30 }}>
       <Button
         onClick={() => router.push("/")}
         variant="outlined"
@@ -127,7 +92,7 @@ export const Characters: FC<ICharactersPage> = ({ data, errorData }) => {
       >
         Back to Home
       </Button>
-      <CharacterList data={RequiredList} />
+      <CharacterList data={charactersList?.results} />
       <PaginationControlled
         sx={{ my: 5 }}
         onChangePage={handleChangePage}

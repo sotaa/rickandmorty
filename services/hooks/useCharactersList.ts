@@ -22,8 +22,9 @@ export const useCharactersList = ({
   initialData,
 }: Args): UseQueryResult<TData> => {
   return useQuery({
-    queryKey: ["character"],
+    queryKey: ["character", page],
     queryFn: () => fetchCharactersList({ name, page }),
     initialData: initialData,
+    enabled: false,
   });
 };

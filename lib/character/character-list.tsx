@@ -10,7 +10,7 @@ import { Characters } from "./models";
 
 export const CharacterList: FC<{ data: Characters }> = ({ data }) => {
   return (
-    <ImageList cols={3} gap={20}>
+    <ImageList cols={5} gap={20}>
       {map(data, (character) => {
         return <CharacterCard key={character.id} character={character} />;
       })}
