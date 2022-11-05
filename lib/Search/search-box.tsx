@@ -14,10 +14,10 @@ import { SearchForm } from "./models";
 const initialValues = { searchBox: "" };
 
 const SearchFormSchema = Yup.object().shape({
-  searchBox: Yup.string()
-    .min(1, "Search value must be at least 1 character!")
-    .max(50, "The maximum number of letters should be 50 letters")
-    .required("Search value is Required!"),
+  searchBox: Yup.string().max(
+    50,
+    "The maximum number of letters should be 50 letters"
+  ),
 });
 
 export const SearchBox: FC = () => {
@@ -29,17 +29,11 @@ export const SearchBox: FC = () => {
 
   const formik = useFormik<SearchForm>({
     initialValues: initialValues,
-    enableReinitialize: false,
-    validateOnBlur: false,
-    validateOnChange: false,
-    validateOnMount: false,
     validationSchema: SearchFormSchema,
     onSubmit: handleOnSubmit,
   });
 
-  const { errors, values } = formik;
-
-  const isSubmitButtonDisabled = values.searchBox.length == 0;
+  const { errors } = formik;
 
   return (
     <FormikProvider value={formik}>
@@ -52,13 +46,7 @@ export const SearchBox: FC = () => {
           fullWidth
           placeholder="Enter character name..."
         />
-        <Button
-          type="submit"
-          variant="contained"
-          size="large"
-          disabled={isSubmitButtonDisabled}
-          sx={{ mt: 3 }}
-        >
+        <Button type="submit" variant="contained" size="large" sx={{ mt: 3 }}>
           Search
         </Button>
       </Form>

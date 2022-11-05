@@ -1,49 +1,38 @@
 import { useRouter } from "next/router";
-import { FC, useEffect, useState } from "react";
-import { isEmpty, map } from "lodash";
-import { Button, CircularProgress, Container } from "@mui/material";
-import {
-  CharacterList,
-  ICharactersResponse,
-  PaginationControlled,
-} from "@housing/lib";
+import { FC, useState } from "react";
+import { isEmpty } from "lodash";
+import { CircularProgress, Container } from "@mui/material";
+import { CharacterList } from "@housing/lib";
 import {
   fetchCharactersList,
   ICharactersPage,
   IGetStaticProps,
   useCharactersList,
 } from "@housing/services";
-import { ApiErrorHandler, EmptyData } from "@housing/common";
-import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
+import {
+  EmptyData,
+  ErrorFallback,
+  PaginationControlled,
+} from "@housing/common";
+import { CharacterListBar } from "lib/character/character-list-bar";
 
 export const getServerSideProps = async (ctx: IGetStaticProps) => {
   const queries = ctx.query;
+
   const variables = {
-    name: queries.name,
+    name: queries.name || "",
     page: queries.page || 1,
   };
 
   try {
-    if (!variables.name || !variables.page) {
-      throw {
-        error: {
-          response: {
-            status: 404,
-            statusText: "page not found",
-          },
-        },
-      };
-    }
-
     const data = await fetchCharactersList(variables);
-
     return { props: { data } };
   } catch (error) {
     return {
       props: {
-        error: {
-          statusCode: error.response.status,
-          statusText: error.response.statusText,
+        errorData: {
+          statusCode: 500,
+          statusText: "",
         },
       },
     };
@@ -51,12 +40,14 @@ export const getServerSideProps = async (ctx: IGetStaticProps) => {
 };
 
 export const Characters: FC<ICharactersPage> = ({ data, errorData }) => {
-  if (errorData) {
-    return <ApiErrorHandler errorData={errorData} />;
-  }
-
   const router = useRouter();
   const queries = router.query;
+
+  if (errorData) {
+    return (
+      <ErrorFallback error={""} resetErrorBoundary={() => router.push("./")} />
+    );
+  }
 
   const [page, setPage] = useState(Number(queries.page));
 
@@ -73,7 +64,7 @@ export const Characters: FC<ICharactersPage> = ({ data, errorData }) => {
   });
 
   const handleChangePage = (page: number) => {
-    router.push(`/characters?name=${queries.name}&page=${page}`);
+    router.push(`/characters?name=${queries.name || ""}&page=${page}`);
     setPage(page);
   };
 
@@ -85,13 +76,7 @@ export const Characters: FC<ICharactersPage> = ({ data, errorData }) => {
 
   return (
     <Container maxWidth="lg" sx={{ height: "100vh", mt: 5, mb: 30 }}>
-      <Button
-        onClick={() => router.push("/")}
-        variant="outlined"
-        startIcon={<ArrowBackIosIcon />}
-      >
-        Back to Home
-      </Button>
+      <CharacterListBar onClearFilter={() => setPage(1)} />
       <CharacterList data={charactersList?.results} />
       <PaginationControlled
         sx={{ my: 5 }}

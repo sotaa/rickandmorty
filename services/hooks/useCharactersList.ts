@@ -1,8 +1,12 @@
 import { useQuery, UseQueryResult } from "react-query";
-
 import { API_URLS } from "@housing/constants";
 import { ICharactersResponse } from "@housing/lib";
 import { xhrService } from "@housing/services";
+//
+
+type Variables = { name: string; page: number };
+type Args = { name: string; page: number; initialData: ICharactersResponse };
+type TData = ICharactersResponse;
 
 export const fetchCharactersList = async ({ name, page }: Variables) => {
   const { data } = await xhrService.get<TData>(
@@ -11,10 +15,6 @@ export const fetchCharactersList = async ({ name, page }: Variables) => {
 
   return data;
 };
-
-type Variables = { name: string; page: number };
-type Args = { name: string; page: number; initialData: ICharactersResponse };
-type TData = ICharactersResponse;
 
 export const useCharactersList = ({
   name,
