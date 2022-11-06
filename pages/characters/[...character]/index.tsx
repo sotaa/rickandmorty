@@ -1,12 +1,11 @@
 import { useRouter } from "next/router";
 import { FC, useEffect, useState } from "react";
-import { isArray, isEmpty, map } from "lodash";
-import { CircularProgress, Container } from "@mui/material";
+import { isEmpty } from "lodash";
+import { Container } from "@mui/material";
 
 import { EmptyData, ErrorFallback } from "@housing/common";
 import {
   CharacterInfo,
-  CharacterList,
   EpisodeList,
   ShowMoreEpisode,
   Episodes,
@@ -15,7 +14,6 @@ import {
   fetchCharacter,
   ICharacterPage,
   IGetStaticProps,
-  useCharacter,
   fetchEpisodes,
 } from "@housing/services";
 
@@ -59,13 +57,12 @@ export async function getStaticPaths() {
 const EPISODES_COUNT_FOR_EACH_CALL = 6;
 
 export const Character: FC<ICharacterPage> = ({ data, errorData }) => {
-  const { query, push } = useRouter();
+  const { push } = useRouter();
 
   if (errorData) {
     return <ErrorFallback error={""} resetErrorBoundary={() => push("./")} />;
   }
 
-  const characterId = isArray(query?.character) ? query.character[0] : "0";
   const [episodeIndexRange, setEpisodeIndexRange] = useState({
     from: 0,
     to: 0,
@@ -74,32 +71,16 @@ export const Character: FC<ICharacterPage> = ({ data, errorData }) => {
   const [episodes, setEpisodes] = useState<Episodes>([]);
   const [episodesUrl, setEpisodesUrl] = useState<string[]>([]);
 
-  const {
-    data: characterInfo,
-    isLoading,
-    refetch: refetchCharacterInfo,
-  } = useCharacter({
-    id: characterId,
-    initialData: data,
-  });
-
   useEffect(() => {
-    refetchCharacterInfo();
-  }, []);
-
-  useEffect(() => {
-    if (characterInfo && !isEmpty(characterInfo.episode)) {
+    if (data && !isEmpty(data.episode)) {
       setEpisodeIndexRange({ from: 0, to: EPISODES_COUNT_FOR_EACH_CALL });
     }
-  }, [characterInfo]);
+  }, [data]);
 
   useEffect(() => {
-    if (characterInfo && !isEmpty(characterInfo.episode)) {
+    if (data && !isEmpty(data.episode)) {
       setEpisodesUrl(
-        characterInfo.episode.slice(
-          episodeIndexRange.from,
-          episodeIndexRange.to
-        )
+        data.episode.slice(episodeIndexRange.from, episodeIndexRange.to)
       );
     }
   }, [episodeIndexRange]);
@@ -119,15 +100,12 @@ export const Character: FC<ICharacterPage> = ({ data, errorData }) => {
     });
   };
 
-  //   Handle Api Response Loading
-  if (isLoading) return <CircularProgress />;
-
   //   Handle Empty Data
-  if (!characterInfo) return <EmptyData />;
+  if (!data) return <EmptyData />;
 
   return (
     <Container maxWidth="lg" sx={{ height: "100vh", mt: 5, mb: 30 }}>
-      <CharacterInfo character={characterInfo} />
+      <CharacterInfo character={data} />
       <EpisodeList data={episodes} />
       <ShowMoreEpisode onShowMoreEpisode={handleShowMoreEpisode} />
     </Container>
