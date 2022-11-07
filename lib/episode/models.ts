@@ -6,8 +6,7 @@ export type Episode = {
 };
 export type Episodes = Episode[];
 
-export interface IShowMoreEpisode {
+export type EpisodesListProps = { data: Episodes };
+export interface IShowMoreEpisodeProps {
   onShowMoreEpisode: VoidFunction;
 }
-
-export type EpisodesList = { data: Episodes };

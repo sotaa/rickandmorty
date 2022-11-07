@@ -1,8 +1,8 @@
 import { FC } from "react";
 import { Container, Button, Typography, Stack, Box, Grid } from "@mui/material";
-import { IErrorFallBack } from "@housing/services";
+import { IErrorFallBackProps } from "@housing/services";
 
-export const ErrorFallback: FC<IErrorFallBack> = ({
+export const ErrorFallback: FC<IErrorFallBackProps> = ({
   error,
   resetErrorBoundary,
 }) => {

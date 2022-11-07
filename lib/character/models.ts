@@ -1,6 +1,3 @@
-import { SxProps } from "@mui/material";
-import { OverridableTypeMap } from "@mui/material/OverridableComponent";
-
 export type Character = {
   id: number;
   name: string;
@@ -15,22 +12,21 @@ export type Character = {
   type: string;
 };
 
-export type Characters = Character[];
-
 export type ReferenceEntity = {
   name: string;
   url: string;
 };
 
+export type CharactersListProps = Character[];
+
+export type ClearFilterProps = {
+  onClearFilter: VoidFunction;
+};
 export interface ICharactersResponse {
   info: {
     count: number;
     next: string;
     pages: number;
   };
-  results: Characters;
+  results: CharactersListProps;
 }
-
-export type ClearFilter = {
-  onClearFilter: VoidFunction;
-};

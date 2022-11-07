@@ -5,7 +5,7 @@ import { Container } from "@mui/material";
 import { CharacterList } from "@housing/lib";
 import {
   fetchCharactersList,
-  ICharactersPage,
+  ICharactersPageProps,
   IGetStaticProps,
 } from "@housing/services";
 import {
@@ -38,7 +38,10 @@ export const getServerSideProps = async (ctx: IGetStaticProps) => {
   }
 };
 
-export const Characters: FC<ICharactersPage> = ({ data, errorData }) => {
+export const CharactersPage: FC<ICharactersPageProps> = ({
+  data,
+  errorData,
+}) => {
   const router = useRouter();
   const queries = router.query;
 
@@ -72,4 +75,4 @@ export const Characters: FC<ICharactersPage> = ({ data, errorData }) => {
   );
 };
 
-export default Characters;
+export default CharactersPage;

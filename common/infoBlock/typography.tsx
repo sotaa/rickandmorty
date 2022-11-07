@@ -1,9 +1,13 @@
 import { FC, Fragment } from "react";
 
-import { IInfoTypography } from "@housing/services";
+import { IInfoTypographyProps } from "@housing/services";
 import { Typography } from "@mui/material";
 
-export const InfoTypography: FC<IInfoTypography> = ({ title, content, sx }) => {
+export const InfoTypography: FC<IInfoTypographyProps> = ({
+  title,
+  content,
+  sx,
+}) => {
   return (
     <Fragment>
       <Typography

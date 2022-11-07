@@ -3,9 +3,9 @@ import { FC } from "react";
 
 import { Stack, Box, Button } from "@mui/material";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
-import { ClearFilter } from "./models";
+import { ClearFilterProps } from "./models";
 
-export const CharacterListBar: FC<ClearFilter> = ({ onClearFilter }) => {
+export const CharacterListBar: FC<ClearFilterProps> = ({ onClearFilter }) => {
   const router = useRouter();
 
   const handleClearFilter = () => {
