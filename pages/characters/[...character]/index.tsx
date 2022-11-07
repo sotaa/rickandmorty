@@ -12,7 +12,7 @@ import {
 } from "@housing/lib";
 import {
   fetchCharacter,
-  ICharacterPage,
+  ICharacterPageProps,
   IGetStaticProps,
   fetchEpisodes,
 } from "@housing/services";
@@ -56,7 +56,7 @@ export async function getStaticPaths() {
 
 const EPISODES_COUNT_FOR_EACH_CALL = 6;
 
-export const Character: FC<ICharacterPage> = ({ data, errorData }) => {
+export const Character: FC<ICharacterPageProps> = ({ data, errorData }) => {
   const { push } = useRouter();
 
   if (errorData) {

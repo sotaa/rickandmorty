@@ -3,9 +3,9 @@ import { FC } from "react";
 import { Grid, Card, CardContent, Typography } from "@mui/material";
 import { map } from "lodash";
 import { InfoTypography } from "@housing/common";
-import { EpisodesList } from "./models";
+import { EpisodesListProps } from "./models";
 
-export const EpisodeList: FC<EpisodesList> = ({ data }) => {
+export const EpisodeList: FC<EpisodesListProps> = ({ data }) => {
   return (
     <Grid container spacing={3} mt={4}>
       {data &&

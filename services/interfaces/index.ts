@@ -17,7 +17,7 @@ export interface IStyleContentProps {
   sx?: SxProps;
 }
 
-export interface IErrorFallBack {
+export interface IErrorFallBackProps {
   error: any;
   resetErrorBoundary: any;
 }
@@ -27,18 +27,18 @@ export interface IApiErrorData {
   statusText: string;
 }
 
-export interface IApiError {
+export interface IApiResponse {
   errorData: IApiErrorData;
 }
 
-export interface ICharactersPage extends IApiError {
+export interface ICharactersPageProps extends IApiResponse {
   data: ICharactersResponse;
 }
-export interface ICharacterPage extends IApiError {
+export interface ICharacterPageProps extends IApiResponse {
   data: Character;
 }
 
-export interface IInfoTypography {
+export interface IInfoTypographyProps {
   title: string;
   content: string;
   sx?: SxProps;

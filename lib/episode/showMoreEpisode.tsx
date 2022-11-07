@@ -1,9 +1,9 @@
 import { FC } from "react";
 
 import { Button, Stack } from "@mui/material";
-import { IShowMoreEpisode } from "./models";
+import { IShowMoreEpisodeProps } from "./models";
 
-export const ShowMoreEpisode: FC<IShowMoreEpisode> = ({
+export const ShowMoreEpisode: FC<IShowMoreEpisodeProps> = ({
   onShowMoreEpisode,
 }) => {
   return (
